@@ -23,18 +23,33 @@ export const LoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const res = await api.login({ email, password });
-      login(res.access_token, res.user);
+  const res = await api.login({ email, password });
 
-      if (res.user.role === 'caregiver') navigate('/caregiver/dashboard');
-      else if (res.user.role === 'family') navigate('/family/dashboard');
-      else if (res.user.role === 'admin') navigate('/admin');
-      else navigate('/elderly/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Invalid email or password.');
-    } finally {
-      setLoading(false);
-    }
+  console.log('Login response:', {
+    hasToken: !!res?.access_token,
+    user: res?.user
+  });
+
+  if (!res?.access_token || !res?.user?.role) {
+    throw new Error('Invalid login response from server. Please try again.');
+  }
+
+  login(res.access_token, res.user);
+
+  if (res.user.role === 'caregiver') {
+    navigate('/caregiver/dashboard');
+  } else if (res.user.role === 'family') {
+    navigate('/family/dashboard');
+  } else if (res.user.role === 'admin') {
+    navigate('/admin');
+  } else {
+    navigate('/elderly/dashboard');
+  }
+} catch (err: any) {
+  setError(err.message || 'Invalid email or password.');
+} finally {
+  setLoading(false);
+}
   };
 
   const handleDemoSignIn = async (role: UserRole) => {

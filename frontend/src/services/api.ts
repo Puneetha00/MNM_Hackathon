@@ -1,7 +1,13 @@
-const API_BASE = '/api/v1';
+const API_BASE = 'https://mnm-hackathon-web.onrender.com/api/v1';
 
 export function getAuthToken(): string | null {
-  return localStorage.getItem('eldercare_token');
+  const token = localStorage.getItem('eldercare_token');
+
+  if (!token || token === 'undefined' || token === 'null') {
+    return null;
+  }
+
+  return token;
 }
 
 export function setAuthToken(token: string): void {
