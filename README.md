@@ -138,4 +138,4 @@ npm run dev
 
 
 LIVE:
-[visit:](https://mnm-hackathon.onrender.com)
+[](https://mnm-hackathon.onrender.com)
